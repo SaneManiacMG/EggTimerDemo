@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tvTime;
     Button btnStartStop;
     Boolean allowTimer = true;
+    CountDownTimer countDownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +76,12 @@ public class MainActivity extends AppCompatActivity {
         //Log.i("Timer", "Starting");
         if (allowTimer == true) {
             allowTimer = false;
+            sbTimer.setEnabled(false);
+            btnStartStop = findViewById(R.id.btnStartStop);
+            btnStartStop.setText("Pause");
             sbTimer.findViewById(R.id.sbTimer);
 
-            new CountDownTimer(sbTimer.getProgress() * 1000, 1000) {
+            countDownTimer = new CountDownTimer(sbTimer.getProgress() * 1000, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
                     Log.i("Timer", String.valueOf(millisUntilFinished / 1000));
@@ -110,8 +114,16 @@ public class MainActivity extends AppCompatActivity {
                     allowTimer = true;
                     Log.i("Timer", "Time ran out!");
                     playSound();
+                    btnStartStop.setText("Start");
+                    sbTimer.setEnabled(true);
                 }
             }.start();
+        } else {
+            Log.i("Timer", "Paused");
+            countDownTimer.cancel();
+            btnStartStop.setText("Start");
+            sbTimer.setEnabled(true);
+            allowTimer = true;
         }
 
     }
@@ -119,8 +131,9 @@ public class MainActivity extends AppCompatActivity {
     public void playSound() {
         Log.i("Sound", "Play sound");
         MediaPlayer mediaPlayer;
-        //AudioManager audioManager;
         mediaPlayer = MediaPlayer.create(this, R.raw.beeping);
         mediaPlayer.start();
+
+        sbTimer.setProgress(30);
     }
 }
