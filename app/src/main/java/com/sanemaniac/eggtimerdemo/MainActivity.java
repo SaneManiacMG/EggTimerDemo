@@ -118,7 +118,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void playSound() {
         Log.i("Sound", "Play sound");
-        /*MediaPlayer sound = (MediaPlayer) getSystemService(AUDIO_SERVICE);
-        sound = MediaPlayer.create(this, R.raw.beeping);*/
+        MediaPlayer mediaPlayer;
+        //AudioManager audioManager;
+        mediaPlayer = MediaPlayer.create(this, R.raw.beeping);
+        mediaPlayer.start();
     }
 }
